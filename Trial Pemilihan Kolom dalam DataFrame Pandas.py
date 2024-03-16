@@ -10,5 +10,20 @@ data = {'Name': ['Leo', 'Rey', 'Bob', 'Lucy'],
 # Convert the dictionary into DataFrame
 df = pd.DataFrame(data)
 
+print('Menampilkan nama dan Kualifikasi \n')
 # Select two columns
 print(df[['Name', 'Qualification']])
+
+alamat = data['Address']
+print('\n\nMenampilkan alamat dari list\n')
+print(alamat, '\n\n')
+
+# Import csv file
+nba = pd.read_csv('nba.csv', index_col='Name')
+
+# Retrieving column by indexing operator
+first = nba['Age']
+second = nba['Team']
+
+print('\n Menampilkan kolom berdasarkan index operator\n')
+print(first, '\n\n', second)
