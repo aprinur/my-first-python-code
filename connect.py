@@ -2,11 +2,12 @@ import mysql.connector
 
 db = mysql.connector.connect(
     host="localhost",
-    user="admin",
-    passwd="admin"
+    user="root",
+    password="stemsa019",
+    database='pelanggan'
+
 )
 
-if db.is_connected():
-    print("Berhasil terhubung ke database")
-else:
-    print("gagal men")
+
+
+db.close()
