@@ -26,7 +26,7 @@ def penghapusan(nama_kegiatan):
         return
 
     menampilkan()
-    hapus_kegiatan = input('\nMasukkan kegiatan yang akan dihapus :')
+    hapus_kegiatan = input('\nMasukkan nama kegiatan yang akan dihapus :')
 
     if hapus_kegiatan in daftar_kegiatan:
         daftar_kegiatan.remove(hapus_kegiatan)
