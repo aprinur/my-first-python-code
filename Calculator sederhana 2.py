@@ -22,7 +22,7 @@ def kalkulasi():
             elif c == '//':
                 d = a // b
 
-            print('Hasil kalkulasi : ', d)
+            print(f'Hasil kalkulasi = {d}')
 
             lanjutkan = input('\n1. Lanjut kalkulasi\n2. Hentikan Kalkulasi \nMasukkan opsi yang dipilih (1/2): ')
             if lanjutkan == '2':
