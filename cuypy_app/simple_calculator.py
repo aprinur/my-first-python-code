@@ -8,7 +8,7 @@ def kalkulasi():
             continue
         else:
             b = float(input('Masukkan nilai pengkalkulasi : '))
-
+            d = []
             if c == '+':
                 d = a + b
             elif c == '-':
@@ -21,6 +21,7 @@ def kalkulasi():
                 d = a % b
             elif c == '//':
                 d = a // b
+            globals()
 
             print(f'Hasil kalkulasi = {d}')
 
@@ -30,4 +31,5 @@ def kalkulasi():
                 break
 
 
-kalkulasi()
+if __name__ == '__main__':
+    kalkulasi()
