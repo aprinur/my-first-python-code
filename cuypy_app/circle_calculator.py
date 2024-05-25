@@ -10,9 +10,13 @@ def calculate_circle():
         print(f'Luas lingkaran adalah {luas_lingkaran} {satuan} dan kelilingnya adalah {keliling_lingkaran} {satuan}')
 
         confirm = input('Apakah akan melanjutkan kalkulasi? [y/n]: ')
+        while confirm.lower() not in ['y', 'n']:
+            confirm = input('Masukkan sesuai pilihan yang tersedia: ')
+
         if confirm.lower() == 'n':
             print('Program menghitung luas dan keliling lingkaran dihentikan')
             break
+        return confirm
 
 
 if __name__ == '__main__':

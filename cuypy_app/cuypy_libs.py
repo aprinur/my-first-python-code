@@ -7,6 +7,8 @@ def welcome(title):
     print(pattern)
     print(f'** {title} **')
     print(pattern)
+    if __name__ == '__main__':
+        welcome(title)
 
 
 def nama_user():

@@ -4,6 +4,7 @@ from cuypy_libs import nama_user
 
 
 def start():
+    nama = nama_user()
     while True:
         cuypy_position = random.randrange(1, 5)
         bentuk_goa = '(_)'  # Membuat bentuk goa
@@ -15,7 +16,7 @@ def start():
         goa_kosong = ' '.join(goa_kosong)  # Menghilangkan tanda petik, kurung siku dan koma
         goa_isi = ' '.join(goa_isi)  # Menghilangkan tanda petik, kurung siku dan koma
 
-        print(f' Halo {nama_user()}, perhatikan goa dibawah ini \n\n{goa_kosong}\n')
+        print(f' Halo {nama}, perhatikan goa dibawah ini \n\n{goa_kosong}\n')
 
         pilihan_user = input(' Ada dimanakah CUYPY berada? [1/2/3/4]: ')  # Input pilihan user
 

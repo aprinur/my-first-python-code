@@ -1,5 +1,4 @@
 def kalkulasi():
-
     while True:
         a = float(input('\nMasukkan nilai yang akan dikalkulasi :'))
         c = input('Masukkan lambang operator(+,-,*,/,%,//) : ')
@@ -21,14 +20,20 @@ def kalkulasi():
                 d = a % b
             elif c == '//':
                 d = a // b
-            globals()
 
             print(f'Hasil kalkulasi = {d}')
 
-            lanjutkan = input('\n1. Lanjut kalkulasi\n2. Hentikan Kalkulasi \nMasukkan opsi yang dipilih (1/2): ')
-            if lanjutkan == '2':
-                print('Kalkulasi dihentikan')
-                break
+        lanjutkan = int(input('\n1. Lanjut kalkulasi'
+                              '\n2. Hentikan Kalkulasi '
+                              '\n\nMasukkan opsi yang dipilih (1/2): '))
+        while lanjutkan not in [1, 2]:
+            lanjutkan = int(input('Masukkan sesuai opsi yang tersedia: '))
+
+        if lanjutkan == 2:
+            print('Kalkulasi dihentikan')
+            break
+
+        return lanjutkan
 
 
 if __name__ == '__main__':

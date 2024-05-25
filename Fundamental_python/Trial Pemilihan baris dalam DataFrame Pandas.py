@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Membuat DataFrame dari file csv
-nba = pd.read_csv('nba.csv', index_col='Name')
+nba = pd.read_csv('../nba.csv', index_col='Name')
 
 #print('Mengambil baris dengan metode .loc[]')
 # Mengamil baris dengan metode .loc[]

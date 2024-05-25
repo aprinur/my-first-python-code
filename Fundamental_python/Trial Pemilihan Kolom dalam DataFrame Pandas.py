@@ -19,7 +19,7 @@ print('\n\nMenampilkan alamat dari list\n')
 print(alamat, '\n\n')
 
 # Import csv file
-nba = pd.read_csv('nba.csv', index_col='Name')
+nba = pd.read_csv('../nba.csv', index_col='Name')
 
 # Retrieving column by indexing operator
 first = nba['Age']
