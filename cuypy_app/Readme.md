@@ -1,0 +1,1 @@
+Ini adalah program pertama saya dengan bahasa pemrograman python
