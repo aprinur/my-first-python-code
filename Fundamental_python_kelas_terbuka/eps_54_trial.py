@@ -1,0 +1,1 @@
+data = 'dan perjuangan pergerakan bangsa indonesia telah sampailah pada saat yang berbahagia '
