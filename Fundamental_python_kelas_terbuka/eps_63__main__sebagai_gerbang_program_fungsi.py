@@ -1,1 +1,0 @@
-print(f"nilai __name__ pada eps_63__main__sebagai_gerbang_program_fungsi.py = '{__name__}'")
