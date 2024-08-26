@@ -1,0 +1,23 @@
+- App contain Create, Read, Update and Delete as main menu
+- App output saved as json file
+- App has exit button
+- Name of the file saved based on input name + '_task.json'
+- File contain name, place, and date only
+- Create function will asking for name, place and date and then save to json file as
+  task_to_do_(number of sequence): {'name': ( name of task)}, {'place': ( place to do task)},
+  {'date': ( date of task )}
+- Create function have option to exit from its function and return to main menu to choose
+  another function
+- When Read function execute it will retrieved a table contain elements in json file with format
+  no | task | place | date
+- Read function give option to return to main menu
+- Update function will retrieved a table that contain elements, and then user can choose wich
+  task to update. After choosing task, user can choose wich element to update either task name,
+  place or date and then confirmation if data has correct continued with saving data into json
+  file and then display current task in a table and then option to return to main menu or
+  continue update task.
+- When delete option choose it will retrieve all elements in json file. User can choose wich task
+  to delete. After choosing task, confirmation form will appear and if user choose to delete the
+  task, task will be delete and elemen in file will be reorder automatically continue with 
+  display current task to do.
+  

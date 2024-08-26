@@ -22,7 +22,7 @@ Input your choice 1/2/3/4/5 : ''')
         case '3':
             operation.Update(filename)
         case '4':
-            print('delete')
+            operation.Delete(filename)
         case '5':
             util.close()
         case _:
