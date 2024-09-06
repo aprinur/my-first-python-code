@@ -351,7 +351,7 @@ def Delete(filename):
                 if verif == 'y':
                     del del_file[file_task]  # menghapus task dari dictionary
 
-                    # membuat dict baru dengan urutan ke yang benar
+                    # membuat dict baru dengan urutan yang benar
                     updated_data = {}
                     for i, (key, value) in enumerate(del_file.items(), start=1):
                         updated_data[f'task_to_do_{i}'] = value
@@ -375,5 +375,4 @@ def Delete(filename):
                     print('Input only y or n')
                     continue
 
-            del_file = updated_data
 
