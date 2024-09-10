@@ -1,10 +1,9 @@
 from cuypy_app import queries_db, main
 from datetime import datetime
-
-
 date_format = "%d/%m/%Y"
 
 
+#  Fungsi memasukkan kegiatan ke database
 def insert():
     nama_kegiatan = input('Nama kegiatan: ')
     tempat = input('Tempat kegiatan: ')
