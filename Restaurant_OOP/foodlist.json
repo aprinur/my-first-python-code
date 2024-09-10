@@ -1,0 +1,26 @@
+{
+    "nasi goreng": {
+        "Name": "Nasi goreng",
+        "Price": 15000,
+        "Category": "main dish",
+        "Stock": "Not Available"
+    },
+    "Salad": {
+        "Name": "Salad",
+        "Price": 10000,
+        "Category": "Side dish",
+        "Stock": "Available"
+    },
+    "Gado gado": {
+        "Name": "Gado gado",
+        "Price": 10000,
+        "Category": "main dish",
+        "Stock": "Available"
+    },
+    "Nasi goreng": {
+        "Name": "Nasi goreng",
+        "Price": 15000,
+        "Category": "main dish",
+        "Stock": "Available"
+    }
+}
