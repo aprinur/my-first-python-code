@@ -1,0 +1,18 @@
+{
+    "ATK": {
+        "Name": "ATK",
+        "Description": "Office stationary"
+    },
+    "Food": {
+        "Name": "Food",
+        "Description": "Something to eat"
+    },
+    "Tools": {
+        "Name": "Tools",
+        "Description": "Device to create or fix something"
+    },
+    "Medical": {
+        "Name": "Medical",
+        "Description": "A device that used by health staff"
+    }
+}

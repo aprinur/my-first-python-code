@@ -1,0 +1,30 @@
+{
+    "THJGLYCH": {
+        "Name": "Pena",
+        "Category": "ATK",
+        "Price": 2000,
+        "Quantity": 20,
+        "Description": "Alat untuk menulis"
+    },
+    "D8OFEL1S": {
+        "Name": "Nasi",
+        "Category": "Food",
+        "Price": 3000,
+        "Quantity": 10,
+        "Description": "Sesuatu untuk mengisi perut"
+    },
+    "5UKGD0L4": {
+        "Name": "Wrench",
+        "Category": "Tools",
+        "Price": 50000,
+        "Quantity": 5,
+        "Description": "Kunci pas"
+    },
+    "PUH2EFVP": {
+        "Name": "Stetoscope",
+        "Category": "Medical",
+        "Price": 100000,
+        "Quantity": 8,
+        "Description": "A device to check hearth pulse"
+    }
+}

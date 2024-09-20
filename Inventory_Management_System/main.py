@@ -10,6 +10,7 @@ class Category:
         self.new_name = None
         self.description = description
         self.new_desc = None
+        Category.add_category(self)
 
     def to_dict(self):
         name = self.name
@@ -47,8 +48,9 @@ class Category:
                 file.write(jsonpickle.encode(category))
                 print('Category successfully added')
 
-    def remove_category(self, name):
-        self.name = name
+    @classmethod
+    def remove_category(cls, name):
+
         try:
             with open('List_of_category.json', 'r') as file:
                 remove = json.load(file)
@@ -58,6 +60,10 @@ class Category:
                 print(f'Category has been removed')
             else:
                 print(f'Category {name} does not exist')
+
+            with open('List_of_category.json', 'w') as file:
+                json.dump(remove, file, indent=4)
+
         except FileNotFoundError:
             print('File not found')
         except json.JSONDecodeError:
@@ -86,6 +92,8 @@ class Category:
                 print('Name has been changed')
             else:
                 print(f"Category {name} already exist")
+        else:
+            print('Updating category canceled')
 
         # Mengubah deskripsi ( jika parameter 'description' tidak None )
         if description is not None:
@@ -95,21 +103,25 @@ class Category:
             else:
                 print(f'The new description cannot be the same as the old description ')
 
+        else:
+            print('Updating category canceled')
+
         with open('List_of_category.json', 'w') as file:
             json.dump(udt_category, file, indent=4)
 
-    def display_category_info(self, name):
-        self.name = name
+    @classmethod
+    def display_category_info(cls, name):
+
         try:
             with open('List_of_category.json', 'r') as file:
                 display = jsonpickle.decode(file.read())
 
-            if self.name in display:
-                item = display[self.name]
-                print(f'Category \t= {item["Name"]}\n'
+            if name in display:
+                item = display[name]
+                print(f'Category \t\t= {item["Name"]}\n'
                       f'Description \t= {item["Description"]}')
             else:
-                print(f"{self.name} doesn't exist ")
+                print(f"{name} doesn't exist ")
 
         except json.JSONDecodeError:
             print('Corrupted file')
@@ -123,8 +135,8 @@ class Category:
             with open('List_of_category.json', 'r') as file:
                 display_all = json.load(file)
 
-            for value in display_all.values():
-                print(f'Category \t= {value["Category"]}\n'
+            for key, value in display_all.items():
+                print(f'\nCategory \t\t= {key}\n'
                       f'Description \t= {value["Description"]}')
 
         except FileNotFoundError:
@@ -185,24 +197,27 @@ class Item:
         else:
             print('Item already exist in Item.json')
 
-    def remove_item(self, id_number=None, name=None):
-        self.id_number = id_number
-        self.name = name
+    @classmethod
+    def remove_item(cls, id_number=None):
+
         try:
             with open('Item.json', 'r') as file:
                 del_file = json.load(file)
 
-            if name in del_file:
-                del del_file[self.name]
-                print(f'Item {self.name} was deleted')
-            elif id_number in del_file:
-                del del_file[self.id_number]
-                print(f'Item with id number {self.id_number} was deleted')
+            with open('Short_inv.json', 'r') as item:
+                new_item = json.load(item)
+
+            if id_number in del_file and new_item:
+                del del_file[id_number]
+                del new_item[id_number]
+                print(f'Item with id number {id_number} was deleted')
             else:
                 print('Item not found')
 
             with open('Item.json', 'w') as file:
                 json.dump(del_file, file, indent=4)
+            with open('Short_inv.json', 'w') as item:
+                json.dump(new_item, item, indent=4)
 
         except FileNotFoundError:
             print('File not found')
@@ -274,7 +289,7 @@ class Item:
             print('Retrieve info failed, file has corrupt')
 
     @classmethod
-    def display_all_item(cls):
+    def display_all_items(cls):
         try:
             if os.path.exists('Short_inv.json'):
                 with open('Short_inv.json', 'r') as short_inv:
@@ -296,20 +311,15 @@ class Inventory:
 
 
 # Creating instance category
-ATK = Category('ATK', 'Office stationary')
-FOOD = Category('Food', 'Something to eat')
-TOOL = Category('Tools', 'Device to create or fix something')
-IT = Category('IT', 'Internet & Technology')
+# ATK = Category('ATK', 'Office stationary')
+# FOOD = Category('Food', 'Something to eat')
+# TOOL = Category('Tools', 'Device to create or fix something')
+#
+# # Creating instance item
+# pena = Item('Pena', ATK, 2000, 20, 'Alat untuk menulis')
+# nasi = Item('Nasi', FOOD, 3000, 10, 'Sesuatu untuk mengisi perut')
+# wrench = Item('Wrench', TOOL, 50000, 5, 'Kunci pas')
 
-# Creating instance item
-pena = Item('Pena', ATK, 2000, 20, 'Alat untuk menulis')
-nasi = Item('Nasi', FOOD, 3000, 10, 'Sesuatu untuk mengisi perut')
-wrench = Item('Wrench', TOOL, 50000, 5, 'Kunci pas')
-
-
-# nasi.add_item()
-# wrench.add_item()
-Item.display_all_item()
-Item.display_item_info('5UKGD0L4')
-IT.add_category()
-
+# Category.remove_category('IT')
+Item.display_all_items()
+Category.display_all_category()
