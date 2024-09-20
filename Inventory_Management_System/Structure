@@ -1,0 +1,20 @@
+Item:
+Atribut: id, name, category, price, quantity, description.
+Metode: add_item(), remove_item(), update_item(), display_item_info().
+
+Category:
+Atribut: id, name, description.
+Metode: add_category(), remove_category(), update_category(), display_category_info().
+
+Inventory:
+Atribut: items (daftar objek Item), categories (daftar objek Category).
+Metode: add_item_to_inventory(), remove_item_from_inventory(), generate_report(),
+        track_stock_level(), notify_low_stock().
+        
+User:
+Atribut: id, username, role.
+Metode: login(), logout(), authorize_action().
+
+AuditLog:
+Atribut: log_entries (daftar perubahan yang dicatat).
+Metode: add_log_entry(), display_logs().
