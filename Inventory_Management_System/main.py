@@ -2,6 +2,7 @@ import json
 import jsonpickle
 import os
 import util
+import csv
 
 
 class Category:
@@ -118,7 +119,7 @@ class Category:
 
             if name in display:
                 item = display[name]
-                print(f'Category \t\t= {item["Name"]}\n'
+                print(f'\nCategory \t\t= {item["Name"]}\n'
                       f'Description \t= {item["Description"]}')
             else:
                 print(f"{name} doesn't exist ")
@@ -135,9 +136,8 @@ class Category:
             with open('List_of_category.json', 'r') as file:
                 display_all = json.load(file)
 
-            for key, value in display_all.items():
-                print(f'\nCategory \t\t= {key}\n'
-                      f'Description \t= {value["Description"]}')
+            for index, key in enumerate(display_all.keys()):
+                print(f'{index + 1}. {key}')
 
         except FileNotFoundError:
             print('Corrupted file')
@@ -147,22 +147,39 @@ class Category:
 
 class Item:
 
-    def __init__(self, name, category: Category, price, quantity, description, id_number=None):
+    def __init__(self, name, price, quantity, description, id_number=None):
 
-        if id_number is None:
-            self.id_number = util.random_id()
-        else:
-            self.id_number = id_number
-        self.name = name
-        self.category = category.to_dict()
+        self.id_number = id_number or util.random_id()
+        self.name = name.title()
         self.price = price
         self.quantity = quantity
-        self.description = description
+        self.description = description.title()
+        Item.add_item(self)
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'price': self.price,
+            'quantity': self.quantity,
+            'description': self.description
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        if isinstance(data, dict):
+            return cls(
+                name=data.get('name'),
+                price=data.get('price'),
+                quantity=data.get('quantity'),
+                description=data.get('description')
+            )
 
     def add_item(self):
-        item_dict = {'Name': self.name, 'Category': self.category,
-                     'Price': self.price, 'Quantity': self.quantity,
-                     'Description': self.description}
+
+        item_dict = {'name': self.name,
+                     'price': self.price,
+                     'quantity': self.quantity,
+                     'description': self.description}
         id_number = self.id_number
 
         if os.path.exists('Item.json'):
@@ -174,28 +191,32 @@ class Item:
         else:
             item = {}
 
-        if id_number not in item:
+        name = self.name
+
+        if name not in [v['name'] for v in item.values()]:
             item[id_number] = item_dict
 
-            if os.path.exists('Short_inv.json'):
-                with open('Short_inv.json', 'r') as inv_file:
-                    try:
-                        short_inv = json.load(inv_file)
-                    except json.JSONDecodeError:
-                        short_inv = {}
-
-            else:
-                short_inv = {}
-
-            short_inv[id_number] = item_dict['Name']
-
-            with open('Item.json', 'w') as file:
-                json.dump(item, file, indent=4)
-
-            with open('Short_inv.json', 'w') as inv:
-                json.dump(short_inv, inv, indent=4)
         else:
             print('Item already exist in Item.json')
+
+        if os.path.exists('Short_inv.json'):
+            with open('Short_inv.json', 'r') as inv_file:
+                try:
+                    short_inv = json.load(inv_file)
+                except json.JSONDecodeError:
+                    short_inv = {}
+
+        else:
+            short_inv = {}
+
+        if name not in [i for i in short_inv.values()]:
+            short_inv[id_number] = item_dict['name']
+
+        with open('Item.json', 'w') as file:
+            json.dump(item, file, indent=4)
+
+        with open('Short_inv.json', 'w') as inv:
+            json.dump(short_inv, inv, indent=4)
 
     @classmethod
     def remove_item(cls, id_number=None):
@@ -207,13 +228,17 @@ class Item:
             with open('Short_inv.json', 'r') as item:
                 new_item = json.load(item)
 
-            if id_number in del_file and new_item:
+            if id_number in del_file:
                 del del_file[id_number]
-                del new_item[id_number]
-                print(f'Item with id number {id_number} was deleted')
             else:
-                print('Item not found')
+                print(f'Item with id number {id_number} not found in Item.json')
 
+            if id_number in new_item:
+                del new_item[id_number]
+            else:
+                print(f'Item with id number {id_number} not found in Short_inv.json')
+
+            print(f'Item with id number {id_number} has been removed')
             with open('Item.json', 'w') as file:
                 json.dump(del_file, file, indent=4)
             with open('Short_inv.json', 'w') as item:
@@ -224,14 +249,9 @@ class Item:
         except json.JSONDecodeError:
             print('File has corrupt')
 
-    def update_item(self, id_number: int, name=None, category=None, price: int = None,
+    @classmethod
+    def update_item(cls, id_number, name=None, price: int = None,
                     quantity: int = None, description=None):
-        self.id_number = id_number
-        self.name = name
-        self.category = category
-        self.price = price
-        self.quantity = quantity
-        self.description = description
 
         try:
             with open('Item.json', 'r') as file:
@@ -239,20 +259,32 @@ class Item:
 
             if id_number in udt_file:
                 if name is not None:
-                    udt_file[self.id_number]['Name'] = self.name
-                    print('Name has been changed')
-                if category is not None:
-                    udt_file[self.id_number]['Category'] = self.category
-                    print('Category has been changed')
+                    if name != udt_file[id_number]['name']:
+                        udt_file[id_number]['name'] = name.title()
+                        print(f"{'Name has been changed'}")
+                    else:
+                        print('Name cannot be the same as before')
+
                 if price is not None:
-                    udt_file[self.id_number]['Price'] = self.price
-                    print('Price has been changed')
+                    if price != udt_file[id_number]['price']:
+                        udt_file[id_number]['price'] = price
+                        print('Price has been changed')
+                    else:
+                        print('Price cannot be the same as before')
+
                 if quantity is not None:
-                    udt_file[self.id_number]['Quantity'] = self.quantity
-                    print('Quantity has been changed')
+                    if quantity != udt_file[id_number]['quantity']:
+                        udt_file[id_number]['quantity'] = quantity
+                        print('Quantity has been changed')
+                    else:
+                        print('Quantity cannot be the same as before')
+
                 if description is not None:
-                    udt_file[self.id_number]['Description'] = self.description
-                    print('Description has been changed')
+                    if description != udt_file[id_number]['description']:
+                        udt_file[id_number]['description'] = description.title()
+                        print('Description has been changed')
+                    else:
+                        print('Description cannot be the same as before')
             else:
                 print(f'Item with id number {id_number} not found')
 
@@ -273,13 +305,11 @@ class Item:
 
                 if id_number in display:
                     item = display[id_number]
-                    category_data = item['Category']
                     print(f'\nId Number \t\t= {id_number}\n'
-                          f'Name \t\t\t= {item['Name']}\n'
-                          f'Category \t\t= {category_data}\n'
-                          f'Price \t\t\t= {item['Price']:,}\n'
-                          f'Quantity \t\t= {item['Quantity']}\n'
-                          f'Description \t= {item['Description']}\n')
+                          f'Name \t\t\t= {item['name']}\n'
+                          f'Price \t\t\t= {item['price']:,}\n'
+                          f'Quantity \t\t= {item['quantity']}\n'
+                          f'Description \t= {item['description']}\n')
                 else:
                     print(f"Id number {id_number} does not exist")
 
@@ -305,21 +335,101 @@ class Item:
 
 
 class Inventory:
-    def __init__(self, items=Item, category=Category):
-        self.item = items
+    def __init__(self, item: Item, category: Category):
+        self.item = item
         self.category = category
+
+    def add_item_to_inventory(self):
+        try:
+            if os.path.exists('Inventory.json'):
+                with open('Inventory.json', 'r') as file:
+                    new_inv = json.load(file)
+            else:
+                new_inv = {}
+
+            item_data = self.item.to_dict()
+            category_name = self.category.name
+
+            if item_data not in new_inv[category_name]:
+                new_inv[category_name].append(item_data)
+            else:
+                print('Item already exist in the inventory')
+
+            with open('Inventory.json', 'w') as file:
+                json.dump(new_inv, file, indent=4)
+                print('Item successfully added to inventory')
+
+        except FileNotFoundError:
+            print('File not found')
+        except json.JSONDecodeError:
+            print('File has corrupt')
+
+    @classmethod
+    def remove_item_from_inventory(cls, name):
+        try:
+            if os.path.exists('Inventory.json'):
+                with open('Inventory.json', 'r') as file:
+                    del_item = json.load(file)
+
+                del_item = del_item.from_dict()
+
+                if name in del_item:
+                    del del_item[name]
+                else:
+                    print(f"Name {name} doesn't exist ")
+
+                with open('Inventory.json', 'w') as file:
+                    json.dump(del_item, file, indent=4)
+        except FileNotFoundError:
+            print('File has missing')
+        except json.JSONDecodeError:
+            print('File has corrupt')
+
+    @classmethod
+    def generate_report(cls, instance):
+        try:
+            if os.path.exists('Inventory.json'):
+                with open('Inventory.json', 'r') as file:
+                    report = json.load(file)
+
+                header = ['Id Number', 'Name', 'Price', 'Quantity', 'Description']
+                with open(f'Inventory_{instance.category}.csv', 'w', encoding='UTF-8', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow(header)
+
+                for key, value in report.items():
+                    with open(f'Inventory_{instance.category}.csv', 'a') as file:
+                        writer = csv.writer(file)
+                        data = [key, value['Name'], value['Price'], value['Quantity'], value['Description']]
+                        writer.writerow(data)
+
+        except TypeError:
+            print('Type error')
+        except json.JSONDecodeError:
+            print('File has corrupt')
+        except FileNotFoundError:
+            print('File has missing')
 
 
 # Creating instance category
 # ATK = Category('ATK', 'Office stationary')
 # FOOD = Category('Food', 'Something to eat')
 # TOOL = Category('Tools', 'Device to create or fix something')
-#
-# # Creating instance item
-# pena = Item('Pena', ATK, 2000, 20, 'Alat untuk menulis')
-# nasi = Item('Nasi', FOOD, 3000, 10, 'Sesuatu untuk mengisi perut')
-# wrench = Item('Wrench', TOOL, 50000, 5, 'Kunci pas')
 
-# Category.remove_category('IT')
-Item.display_all_items()
-Category.display_all_category()
+# # Creating instance item
+# pena = Item('pena', 2000, 20, 'Alat untuk menulis')
+# nasi = Item('Nasi', 3000, 10, 'Sesuatu untuk mengisi perut')
+# wrench = Item('Wrench', 50000, 5, 'Kunci pas')
+# screw_driver = Item('Screw_driver', 20000, 20,
+#                     'A device to loosen or tightent screw')
+
+# Item.update_item('QPNHEL9F', description='A device to loosen or tightent bolt')
+
+# Item.remove_item('L33SIJY6')
+# Item.display_all_items()
+Item.display_item_info('QPNHEL9F')
+# pena1 = Inventory(pena, ATK)
+# pena1.add_item_to_inventory()
+
+""" pr =
+1. Tes hasil kode sebelum lanjut buat class inventory """
