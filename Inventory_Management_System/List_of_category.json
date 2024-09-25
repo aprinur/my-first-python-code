@@ -14,5 +14,9 @@
     "Medical": {
         "Name": "Medical",
         "Description": "A device that used by health staff"
+    },
+    "Electronic": {
+        "Name": "Electronic",
+        "Description": "A device that require electricity to use"
     }
 }

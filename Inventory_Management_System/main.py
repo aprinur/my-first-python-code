@@ -39,9 +39,9 @@ class Category:
 
                 with open('List_of_category.json', 'w') as file:
                     json.dump(category, file, indent=4)
-                print('Category successfully added')
+                print('\nCategory successfully added')
             else:
-                print('Category already exist')
+                print('\nCategory already exist')
 
         else:
             category = {self.name: category_dict}
@@ -58,9 +58,9 @@ class Category:
 
             if name in remove:
                 del remove[name]
-                print(f'Category has been removed')
+                print(f'\nCategory has been removed')
             else:
-                print(f'Category {name} does not exist')
+                print(f'\nCategory {name} does not exist')
 
             with open('List_of_category.json', 'w') as file:
                 json.dump(remove, file, indent=4)
@@ -77,35 +77,30 @@ class Category:
             with open('List_of_category.json', 'r') as file:
                 udt_category = json.load(file)
         else:
-            print('File not found')
+            print('\nFile not found')
             return
 
         # Memeriksa apakah kategori ada di dalam file
         if self.name not in udt_category:
-            print(f'Category {self.name} does not exist')
+            print(f'\nCategory {self.name} does not exist')
             return
 
         # Mengubah nama kategory ( jika parameter 'name' tidak None )
         if name is not None:
-            if name not in udt_category:
-                udt_category[name] = udt_category.pop(self.name)
+            if name != [i for i in udt_category.values()]:
+                udt_category[self.name] = name
                 self.name = name
-                print('Name has been changed')
+                print('\nName has been changed')
             else:
-                print(f"Category {name} already exist")
-        else:
-            print('Updating category canceled')
+                print(f"\nCategory {name} already exist")
 
         # Mengubah deskripsi ( jika parameter 'description' tidak None )
         if description is not None:
-            if description != udt_category[self.name]['Description']:
+            if description != [d for d in udt_category.values()]:
                 udt_category[self.name]['Description'] = description
-                print('Category description has been changed')
+                print('\nCategory description has been changed')
             else:
-                print(f'The new description cannot be the same as the old description ')
-
-        else:
-            print('Updating category canceled')
+                print(f'\nThe new description cannot be the same as the old description ')
 
         with open('List_of_category.json', 'w') as file:
             json.dump(udt_category, file, indent=4)
@@ -197,7 +192,7 @@ class Item:
             item[id_number] = item_dict
 
         else:
-            print('Item already exist in Item.json')
+            print('\nItem already exist')
 
         if os.path.exists('Short_inv.json'):
             with open('Short_inv.json', 'r') as inv_file:
@@ -231,14 +226,14 @@ class Item:
             if id_number in del_file:
                 del del_file[id_number]
             else:
-                print(f'Item with id number {id_number} not found in Item.json')
+                print(f'\nItem with id number {id_number} not found in Item.json')
 
             if id_number in new_item:
                 del new_item[id_number]
             else:
-                print(f'Item with id number {id_number} not found in Short_inv.json')
+                print(f'\nItem with id number {id_number} not found in Short_inv.json')
 
-            print(f'Item with id number {id_number} has been removed')
+            print(f'\nItem with id number {id_number} has been removed')
             with open('Item.json', 'w') as file:
                 json.dump(del_file, file, indent=4)
             with open('Short_inv.json', 'w') as item:
@@ -261,40 +256,40 @@ class Item:
                 if name is not None:
                     if name != udt_file[id_number]['name']:
                         udt_file[id_number]['name'] = name.title()
-                        print(f"{'Name has been changed'}")
+                        print(f"\n{'Name has been changed'}")
                     else:
-                        print('Name cannot be the same as before')
+                        print('\nName cannot be the same as before')
 
                 if price is not None:
                     if price != udt_file[id_number]['price']:
                         udt_file[id_number]['price'] = price
-                        print('Price has been changed')
+                        print('\nPrice has been changed')
                     else:
-                        print('Price cannot be the same as before')
+                        print('\nPrice cannot be the same as before')
 
                 if quantity is not None:
                     if quantity != udt_file[id_number]['quantity']:
                         udt_file[id_number]['quantity'] = quantity
-                        print('Quantity has been changed')
+                        print('\nQuantity has been changed')
                     else:
-                        print('Quantity cannot be the same as before')
+                        print('\nQuantity cannot be the same as before')
 
                 if description is not None:
                     if description != udt_file[id_number]['description']:
                         udt_file[id_number]['description'] = description.title()
-                        print('Description has been changed')
+                        print('\nDescription has been changed')
                     else:
-                        print('Description cannot be the same as before')
+                        print('\nDescription cannot be the same as before')
             else:
-                print(f'Item with id number {id_number} not found')
+                print(f'\nItem with id number {id_number} not found')
 
             with open('Item.json', 'w') as file:
                 json.dump(udt_file, file, indent=4)
 
         except FileNotFoundError:
-            print('Update failed, file not found')
+            print('\nUpdate failed, file not found')
         except json.JSONDecodeError:
-            print('Update failed, file has corrupt')
+            print('\nUpdate failed, file has corrupt')
 
     @classmethod
     def display_item_info(cls, id_number):
@@ -311,7 +306,7 @@ class Item:
                           f'Quantity \t\t= {item['quantity']}\n'
                           f'Description \t= {item['description']}\n')
                 else:
-                    print(f"Id number {id_number} does not exist")
+                    print(f"\nId number {id_number} does not exist")
 
         except FileNotFoundError:
             print('Retrieve info failed, file not found')
@@ -338,6 +333,7 @@ class Inventory:
     def __init__(self, item: Item, category: Category):
         self.item = item
         self.category = category
+        Inventory.add_item_to_inventory(self)
 
     def add_item_to_inventory(self):
         try:
@@ -347,17 +343,31 @@ class Inventory:
             else:
                 new_inv = {}
 
-            item_data = self.item.to_dict()
+            if os.path.exists('Item.json'):
+                with open('Item.json', 'r') as file:
+                    try:
+                        data = json.load(file)
+                    except json.JSONDecodeError:
+                        print('File has corrupt')
+
+            name = self.item.name
+            id_number = util.find_key_by_value(data, name)
+            item_data = {'name': self.item.to_dict()['name'],
+                         'id number': id_number,
+                         'price': self.item.to_dict()['price'],
+                         'quantity': self.item.to_dict()['quantity'],
+                         'description': self.item.to_dict()['description']}
+
             category_name = self.category.name
 
-            if item_data not in new_inv[category_name]:
-                new_inv[category_name].append(item_data)
+            if item_data not in new_inv.values():
+                new_inv[category_name] = item_data
             else:
-                print('Item already exist in the inventory')
+                print('\nItem already exist in the inventory')
 
             with open('Inventory.json', 'w') as file:
                 json.dump(new_inv, file, indent=4)
-                print('Item successfully added to inventory')
+                print('\nItem successfully added to inventory')
 
         except FileNotFoundError:
             print('File not found')
@@ -414,20 +424,29 @@ class Inventory:
 # Creating instance category
 # ATK = Category('ATK', 'Office stationary')
 # FOOD = Category('Food', 'Something to eat')
-# TOOL = Category('Tools', 'Device to create or fix something')
+TOOL = Category('Tools', 'Device to create or fix something')
+# ELECTRONIC = Category('Electronic',
+#                       'A device that need electricity to activate')
+
+# Category.remove_category('Electronic')
+# ELECTRONIC.update_category(description='A device that require electricity to use')
+# Category.display_category_info('Electronic')
+# Category.display_all_category()
 
 # # Creating instance item
 # pena = Item('pena', 2000, 20, 'Alat untuk menulis')
 # nasi = Item('Nasi', 3000, 10, 'Sesuatu untuk mengisi perut')
 # wrench = Item('Wrench', 50000, 5, 'Kunci pas')
-# screw_driver = Item('Screw_driver', 20000, 20,
-#                     'A device to loosen or tightent screw')
+screw_driver = Item('Screw_driver', 20000, 20,
+                    'A device to loosen or tightent screw')
 
 # Item.update_item('QPNHEL9F', description='A device to loosen or tightent bolt')
-
+# Item.update_item('QPNHEL9F', name='kunci pas')
 # Item.remove_item('L33SIJY6')
 # Item.display_all_items()
-Item.display_item_info('QPNHEL9F')
+# Item.display_item_info('QPNHEL9F')
+
+kunci = Inventory(screw_driver, TOOL)
 # pena1 = Inventory(pena, ATK)
 # pena1.add_item_to_inventory()
 
