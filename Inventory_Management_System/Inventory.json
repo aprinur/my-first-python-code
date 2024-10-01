@@ -1,0 +1,38 @@
+{
+    "Tools_QIAZU9CD": {
+        "name": "Screw_Driver",
+        "price": 20000,
+        "quantity": 20,
+        "description": "A Device To Loosen Or Tightent Screw"
+    },
+    "Food_FXCNZ79I": {
+        "name": "Nasi",
+        "price": 3000,
+        "quantity": 2,
+        "description": "Sesuatu Untuk Mengisi Perut"
+    },
+    "ATK_4IEIXENJ": {
+        "name": "Pena",
+        "price": 2000,
+        "quantity": 20,
+        "description": "Alat Untuk Menulis"
+    },
+    "ATK_T7DYDIK7": {
+        "name": "Paper",
+        "price": 1000,
+        "quantity": 30,
+        "description": "An Object To Write On"
+    },
+    "Food_CCD223Z5": {
+        "name": "Mie",
+        "price": 15000,
+        "quantity": 23,
+        "description": "Food Made By Flour"
+    },
+    "Tools_X7SODJ7H": {
+        "name": "Wrench",
+        "price": 50000,
+        "quantity": 5,
+        "description": "Kunci Pas"
+    }
+}

@@ -3,6 +3,7 @@ import jsonpickle
 import os
 import util
 import csv
+from tkinter.messagebox import showinfo
 
 
 class Category:
@@ -348,26 +349,30 @@ class Inventory:
                     try:
                         data = json.load(file)
                     except json.JSONDecodeError:
-                        print('File has corrupt')
+                        print('Item.json has corrupt')
+                        data = {}
+            else:
+                data = {}
 
             name = self.item.name
             id_number = util.find_key_by_value(data, name)
+
             item_data = {'name': self.item.to_dict()['name'],
-                         'id number': id_number,
                          'price': self.item.to_dict()['price'],
                          'quantity': self.item.to_dict()['quantity'],
                          'description': self.item.to_dict()['description']}
 
             category_name = self.category.name
+            new_key = f'{category_name}_{id_number}'
 
-            if item_data not in new_inv.values():
-                new_inv[category_name] = item_data
+            if new_key not in new_inv:
+                new_inv[new_key] = item_data
+
+                with open('Inventory.json', 'w') as file:
+                    json.dump(new_inv, file, indent=4)
+                    print('\nItem successfully added to inventory')
             else:
                 print('\nItem already exist in the inventory')
-
-            with open('Inventory.json', 'w') as file:
-                json.dump(new_inv, file, indent=4)
-                print('\nItem successfully added to inventory')
 
         except FileNotFoundError:
             print('File not found')
@@ -381,12 +386,13 @@ class Inventory:
                 with open('Inventory.json', 'r') as file:
                     del_item = json.load(file)
 
-                del_item = del_item.from_dict()
+                del_name = util.find_key_by_value(del_item, name)
 
-                if name in del_item:
-                    del del_item[name]
+                if del_name in del_item:
+                    del del_item[del_name]
+                    print('Item deleted')
                 else:
-                    print(f"Name {name} doesn't exist ")
+                    print(f"{name} doesn't exist in the inventory")
 
                 with open('Inventory.json', 'w') as file:
                     json.dump(del_item, file, indent=4)
@@ -396,21 +402,20 @@ class Inventory:
             print('File has corrupt')
 
     @classmethod
-    def generate_report(cls, instance):
+    def generate_report(cls):
         try:
             if os.path.exists('Inventory.json'):
                 with open('Inventory.json', 'r') as file:
                     report = json.load(file)
 
-                header = ['Id Number', 'Name', 'Price', 'Quantity', 'Description']
-                with open(f'Inventory_{instance.category}.csv', 'w', encoding='UTF-8', newline='') as file:
+                header = ['Id Number', 'Category', 'Name', 'Price', 'Quantity', 'Description']
+                with open(f'Inventory.csv', 'w', encoding='UTF-8', newline='') as file:
                     writer = csv.writer(file)
                     writer.writerow(header)
 
-                for key, value in report.items():
-                    with open(f'Inventory_{instance.category}.csv', 'a') as file:
-                        writer = csv.writer(file)
-                        data = [key, value['Name'], value['Price'], value['Quantity'], value['Description']]
+                    for key, value in report.items():
+                        data = [key[-8:-1], key[:-9], value['name'], value['price'],
+                                value['quantity'], value['description']]
                         writer.writerow(data)
 
         except TypeError:
@@ -420,11 +425,33 @@ class Inventory:
         except FileNotFoundError:
             print('File has missing')
 
+    @staticmethod
+    def notify_stock_level(name, qty):
+        message = f'Only {qty} {name} left or less in iventory'
+        showinfo(title='Notification', message=message)
 
-# Creating instance category
+    @classmethod
+    def track_stock_level(cls):
+        try:
+            with open('Inventory.json', 'r') as file:
+                data = json.load(file)
+
+            for key, value in data.items():
+                if isinstance(value.get('quantity'), int) and value.get('quantity') <= 5:
+                    name = value.get('name')
+                    qty = value.get('quantity')
+                    cls.notify_stock_level(name, qty)
+
+        except json.JSONDecodeError:
+            print('File corrupt')
+        except FileNotFoundError:
+            print('File has missing')
+
+
+# # Creating instance category
 # ATK = Category('ATK', 'Office stationary')
 # FOOD = Category('Food', 'Something to eat')
-TOOL = Category('Tools', 'Device to create or fix something')
+# TOOL = Category('Tools', 'Device to create or fix something')
 # ELECTRONIC = Category('Electronic',
 #                       'A device that need electricity to activate')
 
@@ -433,22 +460,31 @@ TOOL = Category('Tools', 'Device to create or fix something')
 # Category.display_category_info('Electronic')
 # Category.display_all_category()
 
-# # Creating instance item
+# # # Creating instance item
 # pena = Item('pena', 2000, 20, 'Alat untuk menulis')
 # nasi = Item('Nasi', 3000, 10, 'Sesuatu untuk mengisi perut')
 # wrench = Item('Wrench', 50000, 5, 'Kunci pas')
-screw_driver = Item('Screw_driver', 20000, 20,
-                    'A device to loosen or tightent screw')
+# screw_driver = Item('Screw_driver', 20000, 20,
+#                     'A device to loosen or tightent screw')
+# paper = Item('Paper', 1000, 30, 'An object to write on')
+# mie = Item('Mie', 15000, 23, 'Food made by flour')
 
 # Item.update_item('QPNHEL9F', description='A device to loosen or tightent bolt')
 # Item.update_item('QPNHEL9F', name='kunci pas')
 # Item.remove_item('L33SIJY6')
 # Item.display_all_items()
 # Item.display_item_info('QPNHEL9F')
+#
+# obeng = Inventory(screw_driver, TOOL)
+# nasi = Inventory(nasi, FOOD)
+# pen = Inventory(pena, ATK)
+# paper = Inventory(paper, ATK)
+# mie = Inventory(mie, FOOD)
+# wrench = Inventory(wrench, TOOL)
 
-kunci = Inventory(screw_driver, TOOL)
-# pena1 = Inventory(pena, ATK)
-# pena1.add_item_to_inventory()
-
+# Inventory.remove_item_from_inventory('Wrench')
+# Inventory.generate_report()
+Inventory.track_stock_level()
+# Inventory.
 """ pr =
-1. Tes hasil kode sebelum lanjut buat class inventory """
+1.  lanjut buat class inventory """

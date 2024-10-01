@@ -1,0 +1,20 @@
+- Create class 'Book'
+- add atribute: - 'title'                   = title of the book
+                - 'author'                  = author of the book
+                - 'isbn'                    = isbn number
+                - 'is_borrowed'             = is borrowed or not
+- add methods:  - 'borrow()'                = if the book is borrowed
+                - 'return_book()'           = if the book has been returned
+                - 'display_info()'          = display book information
+
+- Create class 'Library'
+- add atribute: - 'books'                   = list all of the books in library
+- add methods:  - 'add_books(book: Book)'   = add book to library
+                - 'remove_book(isbn: str)'  = delete book based on isbn
+                - 'list_books()             = display all books in library
+                - 'find_book(isbn: str)'    = find book based on isbn
+                - 'borrow_book(isbn: str)'  = borrow book based on isbn
+                - 'return_book(isbn: str)'  = returning book based isbn
+
+- Other feature (Optional):
+

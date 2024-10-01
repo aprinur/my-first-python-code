@@ -10,7 +10,7 @@ data = {'Name': ['Leo', 'Rey', 'Bob', 'Lucy'],
 # Convert the dictionary into DataFrame
 df = pd.DataFrame(data)
 
-print('Menampilkan nama dan Kualifikasi \n')
+print('Menampilkan nama_global dan Kualifikasi \n')
 # Select two columns
 print(df[['Name', 'Qualification']])
 

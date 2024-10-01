@@ -14,20 +14,20 @@ def menampilkan():
 
 # Fungsi penambahan
 def penambahan():
-    kegiatan_baru = input('Masukkan nama kegiatan :')
+    kegiatan_baru = input('Masukkan nama_global kegiatan :')
     daftar_kegiatan.append(kegiatan_baru)
 
     print(f"\n{kegiatan_baru} telah ditambahkan ke daftar kegiatan")
 
-# Fungsi Penghapusan
 
+# Fungsi Penghapusan
 def penghapusan():
     if not daftar_kegiatan:
         print('\nDaftar kegiatan kosong')
         return
 
     menampilkan()
-    hapus_kegiatan = input('\nMasukkan nama kegiatan yang akan dihapus :')
+    hapus_kegiatan = input('\nMasukkan nama_global kegiatan yang akan dihapus :')
 
     if hapus_kegiatan in daftar_kegiatan:
         daftar_kegiatan.remove(hapus_kegiatan)

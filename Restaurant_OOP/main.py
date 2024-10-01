@@ -52,7 +52,7 @@ class MenuItem:
                     # jika file kosong atau tidak valid, membuat dictionary kosong
                     file = {}
 
-            # menambahkan/update entru baru ke data yang ada dengan key sebagai nama menu
+            # menambahkan/update entry baru ke data yang ada dengan key sebagai nama menu
             file[self.name] = food_list
 
         else:

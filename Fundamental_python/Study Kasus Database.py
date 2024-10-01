@@ -8,8 +8,9 @@ db = mysql.connector.connect(
     database="toko_mainan"
 )
 
+
 def insert_data(db):
-    name = input("Mauskkan nama: ")
+    name = input("Masukkan nama: ")
     address = input("Masukkan alamat: ")
     val = (name, address)
     cursor = db.cursor()
@@ -18,6 +19,7 @@ def insert_data(db):
     db.commit()
     cursor.close()
     print("{} data berhasil disimpan".format(cursor.rowcount))
+
 
 def show_data(db):
     cursor = db.cursor()
@@ -33,6 +35,7 @@ def show_data(db):
 
         cursor.close()
 
+
 def update_data(db):
     cursor = db.cursor()
     show_data(db)
@@ -46,6 +49,7 @@ def update_data(db):
     cursor.close()
     print("{} data berhasil diubah".format(cursor.rowcount))
 
+
 def delete_data(db):
     cursor = db.cursor()
     show_data(db)
@@ -56,6 +60,7 @@ def delete_data(db):
     db.commit()
     cursor.close()
     print("{} data berhasil dihapus".format(cursor.rowcount))
+
 
 def search_data(db):
     cursor = db.cursor()
@@ -71,6 +76,7 @@ def search_data(db):
         for data in results:
             print(data)
         cursor.close()
+
 
 def show_menu(db):
     print("===APLIKASI DATABASE PYTHON")
@@ -101,6 +107,7 @@ def show_menu(db):
     else:
         print("Menu salah!")
 
+
 if __name__ == "__main__":
-    while(True):
+    while (True):
         show_menu(db)
