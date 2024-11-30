@@ -87,40 +87,44 @@ print(ktp)
 #         if not i % 3 == 1 or 0:
 #             print(i)
 
+#
+# class Human:
+#     def __init__(self, name: str, height: int, weight: int, gender: str,
+#                  age: int):
+#         """height and weight are in cm"""
+#         self.name = name
+#         self.height = height
+#         self.weight = weight
+#         self.gender = gender
+#         self.age = age
+#
+#     def eating(self, weight: int):
+#         """weight = estimation of total food weight"""
+#         self.weight = self.weight + weight / 10
+#         print(f"{self.name}'s weight after eating = {self.weight:.2f}")
+#
+#     def running(self, distance: int):
+#         """distance in meter(s)"""
+#         self.weight = self.weight - distance / 2000
+#         print(f"{self.name}'s weight after running = {self.weight:.2f}")
+#
+#     def pull_up(self, count):
+#         """count = count of pull up """
+#         self.height = self.height + count / 100
+#         print(f"{self.name}'s height after pull up = {self.height}")
+#
+#
+# udjank = Human('Udjank', 170, 56, 'male', 34)
+# mamat = Human('Mamat', 168, 55, 'male', 25)
+#
+# udjank.eating(1)
+# udjank.running(1200)
+# udjank.pull_up(9)
+# print('\n')
+# mamat.running(1500)
+# mamat.pull_up(12)
 
-class Human:
-    def __init__(self, name: str, height: int, weight: int, gender: str,
-                 age: int):
-        """height and weight are in cm"""
-        self.name = name
-        self.height = height
-        self.weight = weight
-        self.gender = gender
-        self.age = age
-
-    def eating(self, weight: int):
-        """weight = estimation of total food weight"""
-        self.weight = self.weight + weight / 10
-        print(f"{self.name}'s weight after eating = {self.weight:.2f}")
-
-    def running(self, distance: int):
-        """distance in meter(s)"""
-        self.weight = self.weight - distance / 2000
-        print(f"{self.name}'s weight after running = {self.weight:.2f}")
-
-    def pull_up(self, count):
-        """count = count of pull up """
-        self.height = self.height + count / 100
-        print(f"{self.name}'s height after pull up = {self.height}")
-
-
-udjank = Human('Udjank', 170, 56, 'male', 34)
-mamat = Human('Mamat', 168, 55, 'male', 25)
-
-udjank.eating(1)
-udjank.running(1200)
-udjank.pull_up(9)
-print('\n')
-mamat.running(1500)
-mamat.pull_up(12)
-
+for i in range(1, 11):
+    print(i)
+    for j in range(1, 6):
+        print(j)
